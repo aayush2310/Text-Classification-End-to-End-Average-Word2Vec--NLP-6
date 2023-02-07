@@ -1,0 +1,70 @@
+import numpy as np
+import pandas as pd
+
+temp_df=pd.read_csv('IMDB Dataset.csv')
+df=temp_df.iloc[:10000]
+
+df.head()
+
+df['review'][1]
+
+df['sentiment'].value_counts()
+
+df.isnull().sum()
+
+df.duplicated().sum()
+
+df.drop_duplicates(inplace=True)
+
+df.duplicated().sum()
+
+#Basic Preprocessing
+#Remove Tags
+#LowerCase
+#remove stopwords
+
+import re
+def remove_tags(raw_text):
+     cleaned_text=re.sub(re.compile('<.*?>'),'',raw_text)
+    return cleaned_text
+    
+
+df['review']=df['review'].apply(remove_tags)
+
+df
+
+#LowerCasing
+
+df['review']=df['review'].apply(lambda x:x.lower())
+
+from nltk.corpus import stopwords
+sw_list=stopwords.words('english')
+df['review']=df['review'].apply(lambda x: [item for item in x.split() if item not in sw_list]).apply(lambda x:" ".join(x))
+
+df
+
+X=df.iloc[:,0:1]
+y=df['sentiment']
+
+X
+
+y
+
+from sklearn.preprocessing import LabelEncoder
+encoder=LabelEncoder()
+y=encoder.fit_transform(y)
+
+y
+
+from sklearn.model_selection import train_test_split
+X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=1)
+
+X_train.shape
+
+#Applying Bow
+from sklearn.feature_extraction.text import CountVectorizer
+cv=CountVectorizer()
+X_train_bow=cv.fit_transform(X_train['review']).toarray()
+X_test_bow=cv.transform(X_test['review']).toarray()
+
+X_train_bow.shape

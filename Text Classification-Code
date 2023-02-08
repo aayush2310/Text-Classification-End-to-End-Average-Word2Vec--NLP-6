@@ -68,3 +68,51 @@ X_train_bow=cv.fit_transform(X_train['review']).toarray()
 X_test_bow=cv.transform(X_test['review']).toarray()
 
 X_train_bow.shape
+
+from sklearn.naive_bayes import GaussianNB
+gnb=GaussianNB()
+
+gnb.fit(X_train_bow,y_train)
+
+y_pred=gnb.predict(X_test_bow)
+
+from sklearn.metrices import accuracy_score,confusion_matrix
+accuracy_score(y_test,y_pred)
+
+confusion_matrix(y_test,y_pred)
+
+from sklearn.ensemble import RandomForestClassifier
+rf=RandomForestClassifier()
+
+rf.fit(X_train_bow,y_train)
+y_pred=rf.predict(X_test_bow)
+accuracy_score(y_test,y_pred)
+
+
+cv=CountVectorizer(max_features=3000)
+
+X_train_bow=cv.fit_transform(X_train['review']).toarray()
+X_test_bow=cv.transform(X_test['review']).toarray()
+
+rf=RandomForestClassifier()
+
+rf.fit(X_train_bow,y_train)
+y_pred=rf.predict(X_test_bow)
+accuracy_score(y_test,y_pred)
+
+
+
+
+//APPLYING N-GRAMS
+
+
+cv=CountVectorizer(ngram_range=(1,3),max_features=5000)
+
+X_train_bow=cv.fit_transform(X_train['review']).toarray()
+X_test_bow=cv.transform(X_test['review']).toarray()
+
+rf=RandomForestClassifier()
+
+rf.fit(X_train_bow,y_train)
+y_pred=rf.predict(X_test_bow)
+accuracy_score(y_test,y_pred)

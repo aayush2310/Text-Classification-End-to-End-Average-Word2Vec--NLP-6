@@ -7,3 +7,5 @@ X_test_tfidf=tfidf.transform(X_test['review'])
 rf=RandomForestClassifier()
 rf.fit(X_train_tfidf,y_train)
 y_pred=rf.predict(X_test_tfidf)
+
+accuracy_score(y_test,y_pred)
